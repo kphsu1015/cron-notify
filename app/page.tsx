@@ -1,4 +1,5 @@
 import Image from "next/image";
+import NotifyButton from "./NotifyButton";
 
 export default function Home() {
   return (
@@ -37,6 +38,15 @@ export default function Home() {
             </a>{" "}
             center.
           </p>
+        </div>
+        <div className="flex w-full flex-col items-center gap-3 sm:items-start">
+          <h2 className="text-lg font-semibold text-black dark:text-zinc-50">
+            測試通知
+          </h2>
+          <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
+            點下方按鈕會呼叫寄信流程，寄一封通知信到指定信箱。
+          </p>
+          <NotifyButton />
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
