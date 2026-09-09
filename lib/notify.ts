@@ -1,6 +1,7 @@
 import { resend, NOTIFY_FROM, NOTIFY_TO } from "@/lib/resend";
 import { connectToDatabase } from "@/lib/mongoose";
 import { CronLogModel } from "@/models/CronLog";
+import { buildCongratsEmail } from "@/lib/email-template";
 
 export type SendNotifyResult =
   | { ok: true; id?: string; to: string; triggeredAt: Date }
@@ -10,12 +11,14 @@ export type SendNotifyResult =
 export async function sendNotifyEmail(): Promise<SendNotifyResult> {
   const now = new Date();
   const timeText = now.toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
+  const { subject, text, html } = buildCongratsEmail(timeText);
 
   const { data, error } = await resend.emails.send({
     from: NOTIFY_FROM,
     to: NOTIFY_TO,
-    subject: `Cron 通知 - ${timeText}`,
-    text: `這是一封來自 cron-notify 的通知信。\n\n觸發時間：${timeText}`,
+    subject,
+    text,
+    html,
   });
 
   if (error) {
