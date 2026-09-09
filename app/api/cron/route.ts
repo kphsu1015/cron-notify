@@ -1,33 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongoose";
 import { CronLogModel } from "@/models/CronLog";
+import { isAuthorized } from "@/lib/auth";
 
 // 確保每次請求都即時執行，不做靜態快取
 export const dynamic = "force-dynamic";
-
-// 驗證請求是否帶著正確的 secret
-// 支援兩種 header：
-//   Authorization: Bearer <secret>
-//   x-cron-secret: <secret>
-function isAuthorized(request: NextRequest): boolean {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) {
-    console.error("[/api/cron] 未設定 CRON_SECRET 環境變數");
-    return false;
-  }
-
-  const authHeader = request.headers.get("authorization");
-  if (authHeader === `Bearer ${secret}`) {
-    return true;
-  }
-
-  const cronSecretHeader = request.headers.get("x-cron-secret");
-  if (cronSecretHeader === secret) {
-    return true;
-  }
-
-  return false;
-}
 
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
