@@ -8,6 +8,6 @@ if (!RESEND_API_KEY) {
 
 export const resend = new Resend(RESEND_API_KEY);
 
-// 預設寄件人 / 收件人（可用環境變數覆蓋）
-export const NOTIFY_FROM = process.env.NOTIFY_FROM ?? "onboarding@resend.dev";
-export const NOTIFY_TO = process.env.NOTIFY_TO ?? "zoae1015@gmail.com";
+// 寄件人 / 收件人（寫死）
+export const NOTIFY_FROM = "onboarding@resend.dev";
+export const NOTIFY_TO = "zoae1015@gmail.com";
